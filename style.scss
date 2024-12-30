@@ -1,0 +1,28 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.todo{
+    &__container{
+        &__item{
+            display: flex;
+            border: 2px solid black;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 10px 30px;
+            p{
+                margin: 0;
+            }
+        }
+    }
+}
+.delete-todo {
+    border: none;
+    background:transparent;
+    img{
+        height: 50px;
+    }
+    
+}

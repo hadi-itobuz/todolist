@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.todo__container__item {
+  display: flex;
+  border: 2px solid black;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 30px;
+}
+.todo__container__item p {
+  margin: 0;
+}
+
+.delete-todo {
+  border: none;
+  background: transparent;
+}
+.delete-todo img {
+  height: 50px;
+}/*# sourceMappingURL=style.css.map */
