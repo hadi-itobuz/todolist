@@ -11,21 +11,21 @@ let uniqueID = 0;
 
 class todo {//class
     constructor(task) {
-        this.uid = `todo${++uniqueID}`;
+        this.uid = `todo${++uniqueID}`;//upadating and assigning uid
         this.task = task;
         this.isDone = false;
-        addTodo(this);
+        addTodo(this);//adding newly created todo to Document
     }
 }
 
-const deleteTodo = (item) => {
+const deleteTodo = (item) => {//function to delete todoList item
     document.getElementById(item.uid).remove();
     const index = todoList.indexOf(item);
-    if (index > -1) // only splice array when item is found
-        todoList.splice(index, 1); //remove one item only
+    if (index > -1) //found
+        todoList.splice(index, 1);
 }
 
-const createNewTodo = (uid) => {
+const createNewTodo = (uid) => {//creating new todo item div
     const newTodo = document.createElement("div");
     newTodo.classList.add("todo__container__item");
     newTodo.id = `${uid}`;
@@ -81,32 +81,32 @@ const addTodo = (todoItem) => {//creating & adding todo to todoContainer
     allBtn.click();
 }
 
-addBtn.addEventListener('click', (e) => {
+addBtn.addEventListener('click', (e) => {//add btn
     const task = todoInput.value;
     todoInput.value = '';
-    (!todoList.find(e => e.task === task) && task.trim().length) ? new todo(task) : alert("Invalid input");
+    (!todoList.find(e => e.task === task) && task.trim().length) ? new todo(task) : alert("Invalid input");//adding if not repated and not empty
 })
 
-todoInput.addEventListener('keyup', (e) => {
+todoInput.addEventListener('keyup', (e) => {//if enter is pressed while typing
     if (e.key === 'Enter') addBtn.click();
 })
 
 allBtn.addEventListener('click', () => {
-    for (let i = 0; i < todoItem.length; i++)
-        todoItem[i].style.display = "flex";
+    for (let i = 0; i < todoItem.length; i++)//making evrything
+        todoItem[i].style.display = "flex";//visible
 });
 
 const changeDisplay = (conditon) => {
-    for (let i = 0; i < todoItem.length; i++)
-        todoItem[i].style.display = (conditon(todoItem[i].id)) ? "none" : "flex";
+    for (let i = 0; i < todoItem.length; i++)//maing visble or invisible based on condition
+        todoItem[i].style.display = (conditon(todoItem[i].id)) ? "flex" : "none";
 }
 
 activeBtn.addEventListener('click', () => {
-    changeDisplay((id) => todoList.find((e) => e.uid === id).isDone);
+    changeDisplay((id) => !todoList.find((e) => e.uid === id).isDone);//if task is not done 
 })
 
 completeBtn.addEventListener('click', () => {
-    changeDisplay((id) => !todoList.find((e) => e.uid === id).isDone);
+    changeDisplay((id) => todoList.find((e) => e.uid === id).isDone);//if is done
 })
 
 clearBtn.addEventListener('click', () => {
