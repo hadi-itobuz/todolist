@@ -6,9 +6,8 @@ const allBtn = document.getElementById("all");
 const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
-const editInput = document.createElement("input");
-const todoList = [];//empty todolist to store todo objects
-
+// const editInput = document.createElement("input");
+let todoList = [];//empty todolist to store todo objects
 
 let uniqueID = 0;
 
@@ -74,6 +73,7 @@ const createEditBtn = (todoItem, task) => {
 
     const editIp = document.createElement("input");
     editIp.style.backgroundColor = "transparent";
+    editIp.name="editip";
     editIp.addEventListener("keypress", (e) => {
         if (e.key === 'Enter') {
             if(editIp.value.trim().length) { 
