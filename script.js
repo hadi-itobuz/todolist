@@ -8,6 +8,7 @@ const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
 let uniqueID = 0;
+
 class todo {//class
     constructor(task) {
         this.uid = `todo${++uniqueID}`;
@@ -16,18 +17,28 @@ class todo {//class
         addTodo(this);
     }
 }
-const createNewTodo=(uid)=>{
+
+const deleteTodo = (item) => {
+    document.getElementById(item.uid).remove();
+    const index = todoList.indexOf(item);
+    if (index > -1) // only splice array when item is found
+        todoList.splice(index, 1); //remove one item only
+}
+
+const createNewTodo = (uid) => {
     const newTodo = document.createElement("div");
     newTodo.classList.add("todo__container__item");
     newTodo.id = `${uid}`;
     return newTodo;
 }
-const createTask=(txt)=>{
+
+const createTask = (txt) => {
     const task = document.createElement("p");
     task.innerHTML = txt;
     return task;
 }
-const createIsDone=(todoItem,task)=>{
+
+const createIsDone = (todoItem, task) => {
     const isDone = document.createElement("button");
     isDone.classList.add("delete-todo");
     const img = document.createElement("img");
@@ -40,27 +51,23 @@ const createIsDone=(todoItem,task)=>{
     });
     return isDone;
 }
-const createDelBtn=(newTodo,todoItem)=>{
+
+const createDelBtn = (todoItem) => {
     const delBtn = document.createElement("button");
     delBtn.classList.add("delete-todo");
     const delImg = document.createElement("img");
     delImg.src = "./images/delete.png";
     delBtn.appendChild(delImg);
-    delBtn.addEventListener('click', () => {
-        newTodo.remove();
-        const index = todoList.indexOf(todoItem);
-        if (index > -1) { // only splice array when item is found
-            todoList.splice(index, 1); //remove one item only
-        }
-    })
+    delBtn.addEventListener('click', () => deleteTodo(todoItem))
     return delBtn;
 }
+
 const createTodo = (todoItem) => {//creating todo
     todoList.unshift(todoItem);
     const newTodo = createNewTodo(todoItem.uid);
-    const task=createTask(todoItem.task);
-    const isDone=createIsDone(todoItem,task);
-    const delBtn=createDelBtn(newTodo,todoItem);
+    const task = createTask(todoItem.task);
+    const isDone = createIsDone(todoItem, task);
+    const delBtn = createDelBtn(todoItem);
     const btns = document.createElement("span");
     btns.appendChild(isDone);
     btns.appendChild(delBtn);
@@ -68,56 +75,41 @@ const createTodo = (todoItem) => {//creating todo
     newTodo.appendChild(btns);
     return newTodo;
 }
+
 const addTodo = (todoItem) => {//creating & adding todo to todoContainer
     todoContainer.prepend(createTodo(todoItem));
     allBtn.click();
 }
+
 addBtn.addEventListener('click', (e) => {
     const task = todoInput.value;
     todoInput.value = '';
-    if (!todoList.find(e => e.task === task) && task.trim().length) {
-        new todo(task);
-    } else {
-        alert("Invalid input");
-    }
+    (!todoList.find(e => e.task === task) && task.trim().length) ? new todo(task) : alert("Invalid input");
 })
+
 todoInput.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') {
-        addBtn.click();
-    }
+    if (e.key === 'Enter') addBtn.click();
 })
+
 allBtn.addEventListener('click', () => {
-    for (let i = 0; i < todoItem.length; i++) {
+    for (let i = 0; i < todoItem.length; i++)
         todoItem[i].style.display = "flex";
-    }
 });
+
+const changeDisplay = (conditon) => {
+    for (let i = 0; i < todoItem.length; i++)
+        todoItem[i].style.display = (conditon(todoItem[i].id)) ? "none" : "flex";
+}
+
 activeBtn.addEventListener('click', () => {
-    for (let i = 0; i < todoItem.length; i++) {
-        const id = todoItem[i].id;
-        if (todoList.find((e) => e.uid === id).isDone) {
-            todoItem[i].style.display = "none";
-        } else {
-            todoItem[i].style.display = "flex";
-        }
-    }
+    changeDisplay((id) => todoList.find((e) => e.uid === id).isDone);
 })
+
 completeBtn.addEventListener('click', () => {
-    for (let i = 0; i < todoItem.length; i++) {
-        const id = todoItem[i].id;
-        if (todoList.find((e) => e.uid === id).isDone) {
-            todoItem[i].style.display = "flex";
-        } else {
-            todoItem[i].style.display = "none";
-        }
-    }
+    changeDisplay((id) => !todoList.find((e) => e.uid === id).isDone);
 })
+
 clearBtn.addEventListener('click', () => {
     const done = todoList.filter((e) => e.isDone === true);
-    done.forEach(element => {
-        document.getElementById(element.uid).remove();
-        const index = todoList.indexOf(element);
-        if (index > -1) { // only splice array when item is found
-            todoList.splice(index, 1); //remove one item only
-        }
-    });
+    done.forEach(e => deleteTodo(e));
 })
