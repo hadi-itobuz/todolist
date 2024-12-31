@@ -2,11 +2,13 @@ const todoContainer = document.getElementById("todo__container");
 const todoItem = document.getElementsByClassName("todo__container__item");
 const addBtn = document.getElementById("add-todo");
 const todoInput = document.getElementById("todo-input");
-const todoList = [];
 const allBtn = document.getElementById("all");
 const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
+// const editInput=document.createElement("input");
+const todoList = [];//empty todolist to store todo objects
+
 let uniqueID = 0;
 
 class todo {//class
@@ -40,7 +42,7 @@ const createTask = (txt) => {
 
 const createIsDone = (todoItem, task) => {
     const isDone = document.createElement("button");
-    isDone.classList.add("delete-todo");
+    isDone.classList.add("todo-btn");
     const img = document.createElement("img");
     isDone.appendChild(img);
     img.src = './images/true.png';
@@ -54,12 +56,24 @@ const createIsDone = (todoItem, task) => {
 
 const createDelBtn = (todoItem) => {
     const delBtn = document.createElement("button");
-    delBtn.classList.add("delete-todo");
+    delBtn.classList.add("todo-btn");
     const delImg = document.createElement("img");
     delImg.src = "./images/delete.png";
     delBtn.appendChild(delImg);
     delBtn.addEventListener('click', () => deleteTodo(todoItem))
     return delBtn;
+}
+
+const createEditBtn=(todoItem)=>{
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("todo-btn");
+    const editImg = document.createElement("img");
+    editImg.src = "./images/edit.png";
+    editBtn.appendChild(editImg);
+    editBtn.addEventListener('click', ()=>{
+        
+    })
+    return editBtn;
 }
 
 const createTodo = (todoItem) => {//creating todo
@@ -68,9 +82,12 @@ const createTodo = (todoItem) => {//creating todo
     const task = createTask(todoItem.task);
     const isDone = createIsDone(todoItem, task);
     const delBtn = createDelBtn(todoItem);
+    const editBtn=createEditBtn(todoItem);
     const btns = document.createElement("span");
+    btns.style.minWidth="100px";
     btns.appendChild(isDone);
     btns.appendChild(delBtn);
+    btns.appendChild(editBtn);
     newTodo.appendChild(task);
     newTodo.appendChild(btns);
     return newTodo;
