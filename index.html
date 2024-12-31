@@ -11,20 +11,20 @@
 </head>
 
 <body>
-    <div class="todo d-flex flex-column align-items-center justify-content-center m-5 p-5 gap-3 w-100">
+    <div class="todo d-flex flex-column align-items-center justify-content-center m-2 p-2 m-md-auto p-md-5 gap-3">
         <h1 class="text-center">TO-DO</h1>
-        <div class="todo__input">
-            <input id="todo-input" type="text">
-            <button id="add-todo">Add</button>
+        <div class="todo__input input-group">
+            <input class="form-control bg-transparent" id="todo-input" type="text">
+            <button class="btn btn-outline-success px-3 px-md-4" id="add-todo">Add</button>
         </div>
-        <div class="d-flex flex-column gap-3" id="todo__container">
-
+        <div class="d-flex flex-column gap-3" class="d-flex flex-column justify-content-center align-items-center"  id="todo__container">
+<!--  -->
         </div>
-        <div class="todo__btns d-flex gap-3">
-            <button id="all">All</button>
-            <button id="active">Active</button>
-            <button id="complete">Completed</button>
-            <button id="clear">Clear</button>
+        <div class="todo__btns d-flex flex-wrap justify-content-center gap-3">
+            <button class="btn btn-outline-primary" id="all">All</button>
+            <button class="btn btn-outline-success" id="active">Active</button>
+            <button class="btn btn-outline-secondary" id="complete">Completed</button>
+            <button class="btn btn-outline-danger" id="clear">Clear</button>
         </div>
     </div>
     <script src="script.js"></script>
