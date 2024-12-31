@@ -6,8 +6,9 @@ const allBtn = document.getElementById("all");
 const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
-// const editInput=document.createElement("input");
+const editInput = document.createElement("input");
 const todoList = [];//empty todolist to store todo objects
+
 
 let uniqueID = 0;
 
@@ -64,14 +65,29 @@ const createDelBtn = (todoItem) => {
     return delBtn;
 }
 
-const createEditBtn=(todoItem)=>{
+const createEditBtn = (todoItem, task) => {
     const editBtn = document.createElement("button");
     editBtn.classList.add("todo-btn");
     const editImg = document.createElement("img");
     editImg.src = "./images/edit.png";
     editBtn.appendChild(editImg);
-    editBtn.addEventListener('click', ()=>{
-        
+
+    const editIp = document.createElement("input");
+    editIp.style.backgroundColor = "transparent";
+    editIp.addEventListener("keypress", (e) => {
+        if (e.key === 'Enter') {
+            if(editIp.value.trim().length) { 
+            task.innerText=editIp.value;
+            todoItem.task=editIp.value;
+            }
+            editIp.remove();
+            task.style.display="inline";
+        }
+    })
+    editBtn.addEventListener('click', () => {
+        task.style.display = "none";
+        editIp.value=todoItem.task;
+        editBtn.parentNode.parentNode.prepend(editIp);
     })
     return editBtn;
 }
@@ -82,9 +98,9 @@ const createTodo = (todoItem) => {//creating todo
     const task = createTask(todoItem.task);
     const isDone = createIsDone(todoItem, task);
     const delBtn = createDelBtn(todoItem);
-    const editBtn=createEditBtn(todoItem);
+    const editBtn = createEditBtn(todoItem, task);
     const btns = document.createElement("span");
-    btns.style.minWidth="100px";
+    btns.style.minWidth = "115px";
     btns.appendChild(isDone);
     btns.appendChild(delBtn);
     btns.appendChild(editBtn);
