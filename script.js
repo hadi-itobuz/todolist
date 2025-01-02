@@ -6,9 +6,8 @@ const allBtn = document.getElementById("all");
 const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
-// const editInput = document.createElement("input");
 let todoList = [];//empty todolist to store todo objects
-
+// const todoList=JSON.parse(localStorage.getItem("todoItems")) || [];
 let uniqueID = 0;
 
 class todo {//class
@@ -17,14 +16,15 @@ class todo {//class
         this.task = task;
         this.isDone = false;
         addTodo(this);//adding newly created todo to Document
+        // localStorage.setItem("todoItems",JSON.stringify(todoList))
     }
 }
 
 const deleteTodo = (item) => {//function to delete todoList item
-    document.getElementById(item.uid).remove();
+    document.getElementById(item.uid).remove();//removing from DOM
     const index = todoList.indexOf(item);
     if (index > -1) //found
-        todoList.splice(index, 1);
+        todoList.splice(index, 1);//removing from array
 }
 
 const createNewTodo = (uid) => {//creating new todo item div
@@ -48,7 +48,7 @@ const createIsDone = (todoItem, task) => {
     img.src = './images/true.png';
     isDone.addEventListener('click', () => {
         todoItem.isDone = !todoItem.isDone;
-        img.src = (!todoItem.isDone) ? './images/true.png' : './images/false.png';
+        img.src = (!todoItem.isDone) ? './images/true.png' : './images/false.png';//changing icon
         task.style.textDecoration = (todoItem.isDone) ? 'line-through' : 'none';
     });
     return isDone;
@@ -60,7 +60,7 @@ const createDelBtn = (todoItem) => {
     const delImg = document.createElement("img");
     delImg.src = "./images/delete.png";
     delBtn.appendChild(delImg);
-    delBtn.addEventListener('click', () => deleteTodo(todoItem))
+    delBtn.addEventListener('click', () => deleteTodo(todoItem));
     return delBtn;
 }
 
@@ -71,24 +71,28 @@ const createEditBtn = (todoItem, task) => {
     editImg.src = "./images/edit.png";
     editBtn.appendChild(editImg);
 
-    const editIp = document.createElement("input");
+    const editIp = document.createElement("input");//adding input to get edited text
     editIp.style.backgroundColor = "transparent";
-    editIp.name="editip";
+    editIp.name = "editip";
     editIp.addEventListener("keypress", (e) => {
         if (e.key === 'Enter') {
-            if(editIp.value.trim().length) { 
-            task.innerText=editIp.value;
-            todoItem.task=editIp.value;
+            if (editIp.value.trim().length) { //if not empty
+                task.innerText = editIp.value; //updating dom
+                todoItem.task = editIp.value; //updating array
             }
-            editIp.remove();
-            task.style.display="inline";
+            editIp.remove(); //removing editng option
+            task.style.display = "inline"; //bringing back task
         }
     })
     editBtn.addEventListener('click', () => {
         task.style.display = "none";
-        editIp.value=todoItem.task;
-        editBtn.parentNode.parentNode.prepend(editIp);
+        editIp.value = todoItem.task;
+        editBtn.parentNode.parentNode.prepend(editIp);//adding editing option
+        task.parentNode.addEventListener('mouseleave',()=>{
+            editIp.dispatchEvent(new KeyboardEvent('keypress',  {'key':'Enter'}));
+        })
     })
+    
     return editBtn;
 }
 
