@@ -6,17 +6,18 @@ const allBtn = document.getElementById("all");
 const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
-let todoList = [];//empty todolist to store todo objects
-// const todoList=JSON.parse(localStorage.getItem("todoItems")) || [];
-let uniqueID = 0;
+const todoList = JSON.parse(localStorage.getItem("todoItems")) || [];
+let uniqueID = JSON.parse(localStorage.getItem("uid")) || 0;
 
 class todo {//class
     constructor(task) {
         this.uid = `todo${++uniqueID}`;//upadating and assigning uid
         this.task = task;
         this.isDone = false;
-        addTodo(this);//adding newly created todo to Document
-        // localStorage.setItem("todoItems",JSON.stringify(todoList))
+        todoList.push(this);
+        addTodo(this);//adding newly created todo to DOM
+        localStorage.setItem("todoItems", JSON.stringify(todoList));
+        localStorage.setItem("uid", JSON.stringify(uniqueID));
     }
 }
 
@@ -25,6 +26,7 @@ const deleteTodo = (item) => {//function to delete todoList item
     const index = todoList.indexOf(item);
     if (index > -1) //found
         todoList.splice(index, 1);//removing from array
+    localStorage.setItem("todoItems", JSON.stringify(todoList));
 }
 
 const createNewTodo = (uid) => {//creating new todo item div
@@ -45,11 +47,12 @@ const createIsDone = (todoItem, task) => {
     isDone.classList.add("todo-btn");
     const img = document.createElement("img");
     isDone.appendChild(img);
-    img.src = './images/true.png';
+    img.src = (!todoItem.isDone) ? './images/true.png' : './images/false.png';
     isDone.addEventListener('click', () => {
         todoItem.isDone = !todoItem.isDone;
         img.src = (!todoItem.isDone) ? './images/true.png' : './images/false.png';//changing icon
         task.style.textDecoration = (todoItem.isDone) ? 'line-through' : 'none';
+        localStorage.setItem("todoItems", JSON.stringify(todoList));
     });
     return isDone;
 }
@@ -79,6 +82,7 @@ const createEditBtn = (todoItem, task) => {
             if (editIp.value.trim().length) { //if not empty
                 task.innerText = editIp.value; //updating dom
                 todoItem.task = editIp.value; //updating array
+                localStorage.setItem("todoItems", JSON.stringify(todoList));
             }
             editIp.remove(); //removing editng option
             task.style.display = "inline"; //bringing back task
@@ -88,16 +92,15 @@ const createEditBtn = (todoItem, task) => {
         task.style.display = "none";
         editIp.value = todoItem.task;
         editBtn.parentNode.parentNode.prepend(editIp);//adding editing option
-        task.parentNode.addEventListener('mouseleave',()=>{
-            editIp.dispatchEvent(new KeyboardEvent('keypress',  {'key':'Enter'}));
+        task.parentNode.addEventListener('mouseleave', () => {
+            editIp.dispatchEvent(new KeyboardEvent('keypress', { 'key': 'Enter' }));
         })
     })
-    
+
     return editBtn;
 }
 
 const createTodo = (todoItem) => {//creating todo
-    todoList.unshift(todoItem);
     const newTodo = createNewTodo(todoItem.uid);
     const task = createTask(todoItem.task);
     const isDone = createIsDone(todoItem, task);
@@ -119,9 +122,9 @@ const addTodo = (todoItem) => {//creating & adding todo to todoContainer
 }
 
 addBtn.addEventListener('click', (e) => {//add btn
-    const task = todoInput.value;
+    const task = todoInput.value.trim();
     todoInput.value = '';
-    (!todoList.find(e => e.task === task) && task.trim().length) ? new todo(task) : alert("Invalid input");//adding if not repated and not empty
+    (!todoList.find(e => e.task === task) && task.length) ? new todo(task) : alert("Invalid input");//adding if not repated and not empty
 })
 
 todoInput.addEventListener('keyup', (e) => {//if enter is pressed while typing
@@ -150,3 +153,7 @@ clearBtn.addEventListener('click', () => {
     const done = todoList.filter((e) => e.isDone === true);
     done.forEach(e => deleteTodo(e));
 })
+
+todoList.forEach(e => {//adding elemnts presnt in todo list to DOM on reload
+    addTodo(e);
+});
