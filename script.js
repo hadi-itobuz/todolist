@@ -36,9 +36,9 @@ const createNewTodo = (uid) => {//creating new todo item div
     return newTodo;
 }
 
-const createTask = (txt) => {
+const createTask = (taskText) => {
     const task = document.createElement("p");
-    task.innerHTML = txt;
+    task.innerHTML = taskText;
     return task;
 }
 
@@ -136,9 +136,9 @@ allBtn.addEventListener('click', () => {
         todoItem[i].style.display = "flex";//visible
 });
 
-const changeDisplay = (conditon) => {
+const changeDisplay = (displayConditon) => {
     for (let i = 0; i < todoItem.length; i++)//maing visble or invisible based on condition
-        todoItem[i].style.display = (conditon(todoItem[i].id)) ? "flex" : "none";
+        todoItem[i].style.display = (displayConditon(todoItem[i].id)) ? "flex" : "none";
 }
 
 activeBtn.addEventListener('click', () => {
