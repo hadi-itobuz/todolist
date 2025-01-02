@@ -8,6 +8,19 @@ const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
 const todoList = JSON.parse(localStorage.getItem("todoItems")) || [];
 let uniqueID = JSON.parse(localStorage.getItem("uid")) || 0;
+const heading=document.getElementById("heading")
+const headingText="Todo List"
+
+textSequence(0, '');
+function textSequence(i, value) {
+  if (headingText.length > i) {
+    setTimeout(function() {
+      value += headingText[i];
+      heading.innerHTML = value;
+      textSequence(++i, value);
+    }, 150);
+  } 
+}
 
 class todo {//class
     constructor(task) {
@@ -157,4 +170,3 @@ clearBtn.addEventListener('click', () => {
 todoList.forEach(e => {//adding elemnts presnt in todo list to DOM on reload
     addTodo(e);
 });
-//shifted to branch dev

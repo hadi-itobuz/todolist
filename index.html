@@ -7,12 +7,12 @@
     <title>Todo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="./styles/style.css">
 </head>
 
 <body>
     <div class="todo d-flex flex-column align-items-center justify-content-center m-2 p-2 m-md-auto p-md-5 gap-3">
-        <h1 class="text-center">TO-DO</h1>
+        <h1 class="text-center fw-bold" id="heading">Todo List</h1>
         <div class="todo__input input-group">
             <input class="form-control bg-transparent" id="todo-input" type="text">
             <button class="btn btn-outline-success px-3 px-md-4" id="add-todo">Add</button>
@@ -21,10 +21,10 @@
 
         </div>
         <div class="todo__btns d-flex flex-wrap justify-content-center gap-3">
-            <button class="btn btn-outline-primary" id="all">All</button>
-            <button class="btn btn-outline-success" id="active">Active</button>
-            <button class="btn btn-outline-secondary" id="complete">Completed</button>
-            <button class="btn btn-outline-danger" id="clear">Clear</button>
+            <button class="btn btn-outline-primary px-3" id="all">All</button>
+            <button class="btn btn-outline-success px-3" id="active">Active</button>
+            <button class="btn btn-outline-secondary px-3" id="complete">Completed</button>
+            <button class="btn btn-outline-danger px-3" id="clear">Clear</button>
         </div>
     </div>
     <script src="script.js"></script>

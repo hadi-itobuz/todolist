@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   color: white;
+  font-family: "Orbitron", serif;
 }
 
 body {
@@ -20,6 +22,7 @@ body {
 }
 .todo #todo-input {
   color: white;
+  font-weight: 400;
 }
 .todo__container__item {
   display: flex;
