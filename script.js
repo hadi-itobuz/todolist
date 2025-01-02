@@ -157,3 +157,4 @@ clearBtn.addEventListener('click', () => {
 todoList.forEach(e => {//adding elemnts presnt in todo list to DOM on reload
     addTodo(e);
 });
+//shifted to branch dev
