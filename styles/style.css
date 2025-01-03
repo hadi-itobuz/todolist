@@ -32,7 +32,13 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 10px 30px;
+  padding: 10px;
+  overflow: scroll;
+}
+@media screen and (min-width: 768px) {
+  .todo__container__item {
+    padding: 10px 30px;
+  }
 }
 .todo__container__item p {
   margin: 0;
@@ -57,4 +63,9 @@ body {
 
 #editInput {
   background-color: transparent;
+}
+@media screen and (min-width: 425px) {
+  #editInput {
+    width: 80%;
+  }
 }/*# sourceMappingURL=style.css.map */

@@ -27,7 +27,9 @@ class todo {//class
     constructor(task) {
         this.uid = `todo${++uniqueID}`;//upadating and assigning uid
         this.task = task;
+        this.taskHistory = [];
         this.isDone = false;
+        this.taskHistory.push(task);
         todoList.push(this);
         addTodo(this);//adding newly created todo to DOM
         localStorage.setItem("todoItems", JSON.stringify(todoList));
@@ -97,21 +99,28 @@ const createEditBtn = (task) => {
     return editBtn;
 }
 
-const createUndoBtn = (todoItem) => {
-    console.log('todoItem :>> ', todoItem)
+const createUndoBtn = (task, todoItem) => {
+    const undoBtn = createBtn('undo');
+    undoBtn.addEventListener('click', () => {
+        if (todoItem.taskHistory.length > 1) {
+            todoItem.taskHistory.pop();
+            todoItem.task = todoItem.taskHistory[todoItem.taskHistory.length - 1];
+            task.innerText = todoItem.task;
+            localStorage.setItem("todoItems", JSON.stringify(todoList));
+        }
+    })
+    return undoBtn;
 }
 
 const createTodo = (todoItem) => {//creating todo
     const newTodo = createNewTodo(todoItem.uid);
     const task = createTask(todoItem.task);
-    const isDone = createIsDone(todoItem, task);
-    const delBtn = createDelBtn(todoItem);
-    const editBtn = createEditBtn(task);
     const btns = document.createElement("span");
-    btns.style.minWidth = "115px";
-    btns.appendChild(isDone);
-    btns.appendChild(delBtn);
-    btns.appendChild(editBtn);
+    btns.style.minWidth = "152px";
+    btns.appendChild(createIsDone(todoItem, task));
+    btns.appendChild(createEditBtn(task));
+    btns.appendChild(createUndoBtn(task, todoItem));
+    btns.appendChild(createDelBtn(todoItem));
     newTodo.appendChild(task);
     newTodo.appendChild(btns);
     return newTodo;
@@ -169,10 +178,16 @@ editIp.addEventListener("keypress", (e) => {
         if (editedText.length > 0) {
             task.innerText = editedText;
             taskObj.task = editedText;
-            console.log('task.innerHTML :>> ', task.innerHTML);
+            taskObj.taskHistory.push(editedText);
             localStorage.setItem("todoItems", JSON.stringify(todoList));
         }
         task.style.display = "flex";
         editIp.remove();
     }
+})
+
+editIp.addEventListener('mouseleave', () => {
+    const task = editIp.parentNode.getElementsByClassName("todo-task")[0];
+    task.style.display = "flex";
+    editIp.remove();
 })

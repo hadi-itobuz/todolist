@@ -36,7 +36,11 @@ body {
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            padding: 10px 30px;
+            padding: 10px;
+            overflow: scroll;
+            @media screen and (min-width: 768px) {
+                padding: 10px 30px;
+            }
 
             p {
                 margin: 0;
@@ -66,5 +70,8 @@ body {
 }
 
 #editInput {
+    @media screen and (min-width:425px) {
+        width: 80%;
+    }
     background-color: transparent;
 }
