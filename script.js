@@ -6,20 +6,21 @@ const allBtn = document.getElementById("all");
 const activeBtn = document.getElementById("active");
 const completeBtn = document.getElementById("complete");
 const clearBtn = document.getElementById("clear");
+const heading = document.getElementById("heading")
+const headingText = "Todo List..."
 const todoList = JSON.parse(localStorage.getItem("todoItems")) || [];
+const editIp = document.createElement("input");//adding input to get edited text
+editIp.id = "editInput";
 let uniqueID = JSON.parse(localStorage.getItem("uid")) || 0;
-const heading=document.getElementById("heading")
-const headingText="Todo List"
-
 textSequence(0, '');
 function textSequence(i, value) {
-  if (headingText.length > i) {
-    setTimeout(function() {
-      value += headingText[i];
-      heading.innerHTML = value;
-      textSequence(++i, value);
-    }, 150);
-  } 
+    if (headingText.length > i) {
+        setTimeout(function () {
+            value += headingText[i];
+            heading.innerHTML = value;
+            textSequence(++i, value);
+        }, 150);
+    }
 }
 
 class todo {//class
@@ -51,6 +52,7 @@ const createNewTodo = (uid) => {//creating new todo item div
 
 const createTask = (taskText) => {
     const task = document.createElement("p");
+    task.classList.add("todo-task");
     task.innerHTML = taskText;
     return task;
 }
@@ -70,47 +72,33 @@ const createIsDone = (todoItem, task) => {
     return isDone;
 }
 
-const createDelBtn = (todoItem) => {
-    const delBtn = document.createElement("button");
-    delBtn.classList.add("todo-btn");
-    const delImg = document.createElement("img");
-    delImg.src = "./images/delete.png";
-    delBtn.appendChild(delImg);
+const createBtn = (img) => {
+    const btn = document.createElement("button");
+    btn.classList.add("todo-btn");
+    const btnImg = document.createElement("img");
+    btnImg.src = `./images/${img}.png`;
+    btn.appendChild(btnImg);
+    return btn;
+}
+
+const createDelBtn = todoItem => {
+    const delBtn = createBtn('delete');
     delBtn.addEventListener('click', () => deleteTodo(todoItem));
     return delBtn;
 }
 
-const createEditBtn = (todoItem, task) => {
-    const editBtn = document.createElement("button");
-    editBtn.classList.add("todo-btn");
-    const editImg = document.createElement("img");
-    editImg.src = "./images/edit.png";
-    editBtn.appendChild(editImg);
-
-    const editIp = document.createElement("input");//adding input to get edited text
-    editIp.style.backgroundColor = "transparent";
-    editIp.name = "editip";
-    editIp.addEventListener("keypress", (e) => {
-        if (e.key === 'Enter') {
-            if (editIp.value.trim().length) { //if not empty
-                task.innerText = editIp.value; //updating dom
-                todoItem.task = editIp.value; //updating array
-                localStorage.setItem("todoItems", JSON.stringify(todoList));
-            }
-            editIp.remove(); //removing editng option
-            task.style.display = "inline"; //bringing back task
-        }
-    })
+const createEditBtn = (task) => {
+    const editBtn = createBtn('edit')
     editBtn.addEventListener('click', () => {
+        editIp.value = task.innerText;
+        editBtn.parentNode.parentNode.prepend(editIp);
         task.style.display = "none";
-        editIp.value = todoItem.task;
-        editBtn.parentNode.parentNode.prepend(editIp);//adding editing option
-        task.parentNode.addEventListener('mouseleave', () => {
-            editIp.dispatchEvent(new KeyboardEvent('keypress', { 'key': 'Enter' }));
-        })
     })
-
     return editBtn;
+}
+
+const createUndoBtn = (todoItem) => {
+    console.log('todoItem :>> ', todoItem)
 }
 
 const createTodo = (todoItem) => {//creating todo
@@ -118,7 +106,7 @@ const createTodo = (todoItem) => {//creating todo
     const task = createTask(todoItem.task);
     const isDone = createIsDone(todoItem, task);
     const delBtn = createDelBtn(todoItem);
-    const editBtn = createEditBtn(todoItem, task);
+    const editBtn = createEditBtn(task);
     const btns = document.createElement("span");
     btns.style.minWidth = "115px";
     btns.appendChild(isDone);
@@ -134,6 +122,7 @@ const addTodo = (todoItem) => {//creating & adding todo to todoContainer
     allBtn.click();
 }
 
+//Event Listners
 addBtn.addEventListener('click', (e) => {//add btn
     const task = todoInput.value.trim();
     todoInput.value = '';
@@ -170,3 +159,20 @@ clearBtn.addEventListener('click', () => {
 todoList.forEach(e => {//adding elemnts presnt in todo list to DOM on reload
     addTodo(e);
 });
+
+editIp.addEventListener("keypress", (e) => {
+    if (e.key === 'Enter') {
+        const parent = editIp.parentNode;
+        const task = parent.getElementsByClassName("todo-task")[0];
+        const taskObj = todoList.find(e => e.uid === parent.id);
+        const editedText = editIp.value.trim();
+        if (editedText.length > 0) {
+            task.innerText = editedText;
+            taskObj.task = editedText;
+            console.log('task.innerHTML :>> ', task.innerHTML);
+            localStorage.setItem("todoItems", JSON.stringify(todoList));
+        }
+        task.style.display = "flex";
+        editIp.remove();
+    }
+})

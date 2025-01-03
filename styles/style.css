@@ -53,4 +53,8 @@ body {
 .todo-btn img:hover {
   transform: scale(1.07);
   transition: 300ms ease-in-out;
+}
+
+#editInput {
+  background-color: transparent;
 }/*# sourceMappingURL=style.css.map */
